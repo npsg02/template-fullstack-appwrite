@@ -21,6 +21,9 @@ export default function Navbar() {
             {user ? (
               <>
                 <span className="text-gray-700">Welcome, {user.name}!</span>
+                <Link href="/wherebuy">
+                  <Button variant="secondary">Wherebuy</Button>
+                </Link>
                 <Link href="/dashboard">
                   <Button variant="secondary">Dashboard</Button>
                 </Link>

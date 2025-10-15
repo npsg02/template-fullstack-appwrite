@@ -6,10 +6,12 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "init-wherebuy": "node scripts/init-wherebuy-collection.js"
   },
   "dependencies": {
     "appwrite": "^21.2.1",
+    "dotenv": "^16.6.1",
     "next": "15.5.5",
     "react": "19.1.0",
     "react-dom": "19.1.0"
