@@ -19,7 +19,7 @@
  *   npm run init-wherebuy
  */
 
-import { Client, Databases, Permission, Role, IndexType } from 'appwrite';
+import { Client, Databases, Permission, Role } from 'appwrite';
 
 // Load environment variables
 const ENDPOINT = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
@@ -67,19 +67,19 @@ const attributes = [
 
 // Index definitions
 const indexes = [
-  { key: 'productName_search', type: IndexType.Fulltext, attributes: ['productName'], description: 'Full-text search on product names' },
-  { key: 'createdAt_desc', type: IndexType.Key, attributes: ['createdAt'], orders: ['DESC'], description: 'Sort by creation date descending' },
-  { key: 'userId_index', type: IndexType.Key, attributes: ['userId'], description: 'Filter by user ID' },
+  { key: 'productName_search', type: 'fulltext', attributes: ['productName'], description: 'Full-text search on product names' },
+  { key: 'createdAt_desc', type: 'key', attributes: ['createdAt'], orders: ['DESC'], description: 'Sort by creation date descending' },
+  { key: 'userId_index', type: 'key', attributes: ['userId'], description: 'Filter by user ID' },
 ];
 
 async function createDatabase(): Promise<string> {
   try {
     console.log('📦 Creating database...');
-    const database = await databases.create(
-      'unique()',
-      'wherebuy-db',
-      true // enabled
-    );
+    const database = await databases.create({
+      databaseId: 'unique()',
+      name: 'wherebuy-db',
+      enabled: true
+    });
     console.log(`✅ Database created: ${database.$id}`);
     return database.$id;
   } catch (error: any) {
@@ -95,17 +95,17 @@ async function createDatabase(): Promise<string> {
 async function createCollection(databaseId: string): Promise<string> {
   try {
     console.log(`\n📋 Creating collection "${COLLECTION_NAME}"...`);
-    const collection = await databases.createCollection(
-      databaseId,
-      'unique()',
-      COLLECTION_NAME,
-      [
+    const collection = await databases.createCollection({
+      databaseId: databaseId,
+      collectionId: 'unique()',
+      name: COLLECTION_NAME,
+      permissions: [
         Permission.read(Role.any()),
         Permission.create(Role.users()),
       ],
-      false, // documentSecurity - we'll handle permissions at app level
-      true   // enabled
-    );
+      documentSecurity: false, // we'll handle permissions at app level
+      enabled: true
+    });
     console.log(`✅ Collection created: ${collection.$id}`);
     return collection.$id;
   } catch (error: any) {
@@ -123,20 +123,20 @@ async function createAttributes(databaseId: string, collectionId: string): Promi
   for (const attr of attributes) {
     try {
       if (attr.type === 'string') {
-        await databases.createStringAttribute(
-          databaseId,
-          collectionId,
-          attr.key,
-          attr.size!,
-          attr.required
-        );
+        await databases.createStringAttribute({
+          databaseId: databaseId,
+          collectionId: collectionId,
+          key: attr.key,
+          size: attr.size!,
+          required: attr.required
+        });
       } else if (attr.type === 'double') {
-        await databases.createFloatAttribute(
-          databaseId,
-          collectionId,
-          attr.key,
-          attr.required
-        );
+        await databases.createFloatAttribute({
+          databaseId: databaseId,
+          collectionId: collectionId,
+          key: attr.key,
+          required: attr.required
+        });
       }
       console.log(`  ✓ Created attribute: ${attr.key} (${attr.type})`);
       
@@ -161,14 +161,14 @@ async function createIndexes(databaseId: string, collectionId: string): Promise<
   
   for (const index of indexes) {
     try {
-      await databases.createIndex(
-        databaseId,
-        collectionId,
-        index.key,
-        index.type,
-        index.attributes,
-        index.orders
-      );
+      await databases.createIndex({
+        databaseId: databaseId,
+        collectionId: collectionId,
+        key: index.key,
+        type: index.type,
+        attributes: index.attributes,
+        orders: index.orders
+      });
       console.log(`  ✓ Created index: ${index.key} (${index.type})`);
       
       // Small delay to avoid rate limiting

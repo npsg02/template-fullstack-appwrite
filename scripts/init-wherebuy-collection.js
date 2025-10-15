@@ -76,11 +76,11 @@ const indexes = [
 async function createDatabase() {
   try {
     console.log('📦 Creating database...');
-    const database = await databases.create(
-      ID.unique(),
-      'wherebuy-db',
-      true
-    );
+    const database = await databases.create({
+      databaseId: ID.unique(),
+      name: 'wherebuy-db',
+      enabled: true
+    });
     console.log(`✅ Database created: ${database.$id}`);
     return database.$id;
   } catch (error) {
@@ -95,17 +95,17 @@ async function createDatabase() {
 async function createCollection(databaseId) {
   try {
     console.log(`\n📋 Creating collection "${COLLECTION_NAME}"...`);
-    const collection = await databases.createCollection(
-      databaseId,
-      ID.unique(),
-      COLLECTION_NAME,
-      [
+    const collection = await databases.createCollection({
+      databaseId: databaseId,
+      collectionId: ID.unique(),
+      name: COLLECTION_NAME,
+      permissions: [
         Permission.read(Role.any()),
         Permission.create(Role.users()),
       ],
-      false,
-      true
-    );
+      documentSecurity: false,
+      enabled: true
+    });
     console.log(`✅ Collection created: ${collection.$id}`);
     return collection.$id;
   } catch (error) {
@@ -122,20 +122,20 @@ async function createAttributes(databaseId, collectionId) {
   for (const attr of attributes) {
     try {
       if (attr.type === 'string') {
-        await databases.createStringAttribute(
-          databaseId,
-          collectionId,
-          attr.key,
-          attr.size,
-          attr.required
-        );
+        await databases.createStringAttribute({
+          databaseId: databaseId,
+          collectionId: collectionId,
+          key: attr.key,
+          size: attr.size,
+          required: attr.required
+        });
       } else if (attr.type === 'double') {
-        await databases.createFloatAttribute(
-          databaseId,
-          collectionId,
-          attr.key,
-          attr.required
-        );
+        await databases.createFloatAttribute({
+          databaseId: databaseId,
+          collectionId: collectionId,
+          key: attr.key,
+          required: attr.required
+        });
       }
       console.log(`  ✓ Created attribute: ${attr.key} (${attr.type})`);
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -157,14 +157,14 @@ async function createIndexes(databaseId, collectionId) {
   
   for (const index of indexes) {
     try {
-      await databases.createIndex(
-        databaseId,
-        collectionId,
-        index.key,
-        index.type,
-        index.attributes,
-        index.orders
-      );
+      await databases.createIndex({
+        databaseId: databaseId,
+        collectionId: collectionId,
+        key: index.key,
+        type: index.type,
+        attributes: index.attributes,
+        orders: index.orders
+      });
       console.log(`  ✓ Created index: ${index.key} (${index.type})`);
       await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {

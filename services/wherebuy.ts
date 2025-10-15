@@ -9,17 +9,17 @@ export const wherebuyService = {
   async createLocation(data: LocationFormData, userId: string, userName: string): Promise<Location> {
     try {
       const now = new Date().toISOString();
-      const response = await databases.createDocument(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        ID.unique(),
-        {
+      const response = await databases.createDocument({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        documentId: ID.unique(),
+        data: {
           ...data,
           userId,
           userName,
           createdAt: now,
         }
-      );
+      });
       return response as unknown as Location;
     } catch (error) {
       console.error('Create location error:', error);
@@ -29,14 +29,14 @@ export const wherebuyService = {
 
   async getLocations(limit: number = 50): Promise<Location[]> {
     try {
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        [
+      const response = await databases.listDocuments({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        queries: [
           Query.orderDesc('createdAt'),
           Query.limit(limit),
         ]
-      );
+      });
       return response.documents as unknown as Location[];
     } catch (error) {
       console.error('Get locations error:', error);
@@ -46,14 +46,14 @@ export const wherebuyService = {
 
   async searchLocationsByProduct(productName: string): Promise<Location[]> {
     try {
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        [
+      const response = await databases.listDocuments({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        queries: [
           Query.search('productName', productName),
           Query.orderDesc('createdAt'),
         ]
-      );
+      });
       return response.documents as unknown as Location[];
     } catch (error) {
       console.error('Search locations error:', error);
@@ -63,14 +63,14 @@ export const wherebuyService = {
 
   async getLocationsByUser(userId: string): Promise<Location[]> {
     try {
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        [
+      const response = await databases.listDocuments({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        queries: [
           Query.equal('userId', userId),
           Query.orderDesc('createdAt'),
         ]
-      );
+      });
       return response.documents as unknown as Location[];
     } catch (error) {
       console.error('Get user locations error:', error);
@@ -80,11 +80,11 @@ export const wherebuyService = {
 
   async getLocation(locationId: string): Promise<Location> {
     try {
-      const response = await databases.getDocument(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        locationId
-      );
+      const response = await databases.getDocument({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        documentId: locationId
+      });
       return response as unknown as Location;
     } catch (error) {
       console.error('Get location error:', error);
@@ -94,15 +94,15 @@ export const wherebuyService = {
 
   async updateLocation(locationId: string, data: Partial<LocationFormData>): Promise<Location> {
     try {
-      const response = await databases.updateDocument(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        locationId,
-        {
+      const response = await databases.updateDocument({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        documentId: locationId,
+        data: {
           ...data,
           updatedAt: new Date().toISOString(),
         }
-      );
+      });
       return response as unknown as Location;
     } catch (error) {
       console.error('Update location error:', error);
@@ -112,11 +112,11 @@ export const wherebuyService = {
 
   async deleteLocation(locationId: string): Promise<void> {
     try {
-      await databases.deleteDocument(
-        DATABASE_ID,
-        LOCATIONS_COLLECTION_ID,
-        locationId
-      );
+      await databases.deleteDocument({
+        databaseId: DATABASE_ID,
+        collectionId: LOCATIONS_COLLECTION_ID,
+        documentId: locationId
+      });
     } catch (error) {
       console.error('Delete location error:', error);
       throw error;
