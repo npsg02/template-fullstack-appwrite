@@ -16,7 +16,36 @@ Wherebuy is a location-based marketplace application that helps users find and s
 
 ## Appwrite Setup
 
-Before using the Wherebuy module, you need to configure Appwrite Database:
+Before using the Wherebuy module, you need to configure Appwrite Database.
+
+### Option A: Automated Setup (Recommended) 🚀
+
+Use our initialization script to automatically create the database, collection, attributes, and indexes:
+
+1. **Create an API Key** in Appwrite Console:
+   - Go to **Settings** → **API Keys** → **Create API Key**
+   - Enable Database scopes (databases, collections, attributes, indexes)
+   - Copy the API key
+
+2. **Add to `.env.local`**:
+   ```env
+   APPWRITE_API_KEY=your_server_api_key_here
+   ```
+
+3. **Run the script**:
+   ```bash
+   npm run init-wherebuy
+   ```
+
+4. **Update `.env.local`** with the Database ID and Collection ID from the script output
+
+5. **Remove the API key** from `.env.local` after setup
+
+See [scripts/README.md](./scripts/README.md) for detailed instructions.
+
+### Option B: Manual Setup
+
+If you prefer to set up manually, follow these steps:
 
 ### 1. Create a Database
 
