@@ -45,10 +45,10 @@ export default function Home() {
             </div>
             
             <div className="bg-white p-8 rounded-lg shadow-md">
-              <div className="text-blue-600 text-4xl mb-4">⚡</div>
-              <h3 className="text-xl font-semibold mb-3">Production Ready</h3>
+              <div className="text-blue-600 text-4xl mb-4">🛒</div>
+              <h3 className="text-xl font-semibold mb-3">Wherebuy Module</h3>
               <p className="text-gray-600">
-                Scalable architecture with best practices and modular structure
+                Find and share shopping locations with product details and map integration
               </p>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center">
                   <span className="text-green-500 mr-2">✓</span>
-                  Environment configuration
+                  Wherebuy location sharing module
                 </li>
               </ul>
             </div>

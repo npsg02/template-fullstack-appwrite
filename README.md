@@ -13,6 +13,7 @@ A modern, production-ready fullstack application template built with **Next.js 1
 - 🌐 **Environment Configuration** with `.env` support
 - 📱 **Responsive Design** mobile-first approach
 - 🔒 **Type-Safe** with TypeScript throughout
+- 🛒 **Wherebuy Module** - Location-based marketplace for sharing shopping locations
 
 ## 📋 Requirements
 
@@ -192,6 +193,11 @@ await authService.logout();
 - **`/login`** - User login
 - **`/register`** - User registration
 - **`/dashboard`** - Protected dashboard (requires authentication)
+- **`/wherebuy`** - Location-based marketplace for shopping (requires authentication)
+
+## 🛒 Wherebuy Module
+
+Wherebuy is a location-based marketplace application that helps users find and share shopping locations with detailed product information. See [WHEREBUY_README.md](WHEREBUY_README.md) for complete setup and usage instructions.
 
 ## 🛠️ Available Scripts
 
